@@ -1,12 +1,7 @@
 import csv
 from Iris import Iris
-from enum import Enum
+from Iris import IrisType
 
-
-class IrisType(Enum):
-    setosa = 0
-    virginica = 1
-    versicolor = 2
 
 
 filepath = "resources/Iris.csv"

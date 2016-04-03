@@ -1,4 +1,12 @@
 import math
+from enum import Enum
+
+
+class IrisType(Enum):
+    setosa = 0
+    virginica = 1
+    versicolor = 2
+
 
 class Iris(object):
     def __init__(self, iris_id, x, y, z, w, type):
@@ -26,8 +34,32 @@ class Iris(object):
                'type: ' + str(self.type) + '\n'
 
 
-iris1 = Iris(1,1,2,3,4,"iris1")
-iris2 = Iris(2,2,3,4,5,"iris2")
+class Param(object):
+    def __init__(self):
+        self.attribute_values = {}
 
-iris1.count_distance(iris2)
+    def add_attribute(self, attribute_name):
+        self.attribute_values[attribute_name] = Attribute_Value()
+
+    def __str__(self):
+        return self.attribute_values.__str__()
+
+
+class Attribute_Value(object):
+    def __init__(self):
+        self.value_itemList = {}
+
+    def add_attribute_value(self, value):
+        self.value_itemList[value] = Attribute_ItemList()
+
+    def __str__(self):
+        return self.value_itemList.__str__()
+
+
+class Attribute_ItemList(object):
+    def __init__(self):
+        self.itemList = []
+
+    def add_to_itemList(self, item):
+        self.itemList.append(item)
 
