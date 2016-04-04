@@ -1,6 +1,6 @@
-from Iris import DataObject
-from Iris import Iris
+from DataObject import DataObject1
+from DataObject import DataObject
 
 
-objekt = Iris(4, "pierwsy", "dsrsr", "sdfsdf", "dsfsd")
+objekt = DataObject(4, "pierwsy", "dsrsr", "sdfsdf", "dsfsd")
 print(objekt)

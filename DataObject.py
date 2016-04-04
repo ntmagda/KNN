@@ -1,31 +1,22 @@
 import math
-from enum import Enum
 
 
-class IrisType(Enum):
-    setosa = 0
-    virginica = 1
-    versicolor = 2
-
-IrisParams = {}
-
-
-class DataObject(object):
+class DataObject1(object):
     def __init__(self, id):
         self.id = id
 
 
-class Iris(DataObject):
-    def __init__(self, iris_id, **kwargs):
-        super(Iris, self).__init__(iris_id)
+class DataObject(DataObject1):
+    def __init__(self, id, **kwargs):
+        super(DataObject, self).__init__(id)
         self.params = {}
         for param_name, param_value in kwargs.iteritems():
             self.params[param_name] = param_value
 
-    def count_distance(self, other_iris):
+    def count_distance(self, other_object):
         sum = 0
-        for param_name, param_value in other_iris.params:
-            sum += math.pow(other_iris.params[param_name] - self.params[param_name], 2)
+        for param_name, param_value in other_object.params:
+            sum += math.pow(other_object.params[param_name] - self.params[param_name], 2)
         distance = math.sqrt(sum)
         return distance
 
@@ -44,27 +35,27 @@ class Param(object):
         self.attribute_names = {}
 
     def add_attribute_name(self, attribute_name):
-        self.attribute_names[attribute_name] = Attribute_Value()
+        self.attribute_names[attribute_name] = AttributeValue()
 
     def __str__(self):
         return self.attribute_names.__str__()
 
 
-class Attribute_Value(object):
+class AttributeValue(object):
     def __init__(self):
         self.attribute_values = {}
 
     def add_value(self, value):
-        self.attribute_values[value] = Attribute_ItemList()
+        self.attribute_values[value] = AttributeItemList()
 
     def __str__(self):
         return self.attribute_values.__str__()
 
 
-class Attribute_ItemList(object):
+class AttributeItemList(object):
     def __init__(self):
         self.attribute_itemList = []
 
-    def add_to_itemList(self, item):
+    def add_to_item_list(self, item):
         self.attribute_itemList.append(item)
 

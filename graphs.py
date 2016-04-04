@@ -1,20 +1,20 @@
-from Iris import Iris
+from DataObject import DataObject
 import csv
-from Iris import Param, Attribute_ItemList, Attribute_Value
+from DataObject import Param, AttributeItemList, AttributeValue
 
-filepath = "resources/Iris.csv"
-iris_objects = list() # list of items
-iris_id = -1
+filepath = "resources/Wine.csv"
+data_objects = list() # list of items
+id = -1
 
 params = Param()
 attribute_names = [] # tablica z nazwami parametrow
 with open(filepath) as f:
         for row in [content for content in csv.reader(f, delimiter='\n')]:
-            if iris_id == -1: # pierwszy wiersz i wpisanie attrubite_names do params
+            if id == -1: # pierwszy wiersz i wpisanie attrubite_names do params
                 for object in row:
                     for attribute_name in object.split(','):
                         attribute_names.append(attribute_name) #wpisanie atteibute_name do tablicy z nazwami paramterow
-                iris_id += 1
+                id += 1
             else:
                 for object in row:
                     kwargs = {}
@@ -22,20 +22,20 @@ with open(filepath) as f:
                     for attribute_name in attribute_names: # przygotowanie argumentow do wpisania do obiektu
                         kwargs[attribute_name] = str(object.split(',')[i])
                         i += 1
-                    iris_objects.append(Iris(iris_id, **kwargs))
-                    iris_id += 1
+                    data_objects.append(DataObject(id, **kwargs))
+                    id += 1
 
 for attribute_name in attribute_names:
     params.add_attribute_name(str(attribute_name))
 
-for iris in iris_objects:
+for data_object in data_objects:
     for attribute_name, attribute_values in params.attribute_names.iteritems():
         try:
-            params.attribute_names[attribute_name].attribute_values[iris.params[attribute_name]].add_to_itemList(iris)
+            params.attribute_names[attribute_name].attribute_values[data_object.params[attribute_name]].add_to_item_list(data_object)
         except:
-            params.attribute_names[attribute_name].add_value(iris.params[attribute_name])
-            params.attribute_names[attribute_name].attribute_values[iris.params[attribute_name]].add_to_itemList(iris)
-print('sdas')
+            params.attribute_names[attribute_name].add_value(data_object.params[attribute_name])
+            params.attribute_names[attribute_name].attribute_values[data_object.params[attribute_name]].add_to_item_list(data_object)
+
 # def identical(**kwargs):
 #     item_sets_list = []
 #     counter = 0

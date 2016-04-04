@@ -1,9 +1,9 @@
 
-from Iris import DataObject
-from Iris import Iris
+from DataObject import DataObject1
+from DataObject import DataObject
 import math
 
-class Wine(DataObject):
+class Wine(DataObject1):
     def __init__(self, iris_id, type, *args):
         super(Wine, self).__init__(iris_id, type)
         self.alcohol = args[0]
