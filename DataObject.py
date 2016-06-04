@@ -1,15 +1,17 @@
-import math
 import csv
+import math
 
 
-class DataObject1(object):
+class DataObject(object):
     def __init__(self, id):
         self.id = id
+        self.similarity_weigth = {}
+        self.strong_similarity = {}
 
 
-class DataObject(DataObject1):
+class DataObjectWrapper(DataObject):
     def __init__(self, id, **kwargs):
-        super(DataObject, self).__init__(id)
+        super(DataObjectWrapper, self).__init__(id)
         self.params = {}
         for param_name, param_value in kwargs.iteritems():
             self.params[param_name] = param_value
@@ -33,17 +35,16 @@ class DataObject(DataObject1):
 
 class Graph(object):
     def __init__(self, filepath):
-        data_objects = list() # list of items
-        id = -1
-
+        self.data_objects = list() # list of items
         self.params = Param()
+        id = -1
         attribute_names = [] # tablica z nazwami parametrow
         with open(filepath) as f:
                 for row in [content for content in csv.reader(f, delimiter='\n')]:
-                    if id == -1: # pierwszy wiersz i wpisanie attrubite_names do params
+                    if id == -1:  #pierwszy wiersz i wpisanie attrubite_names do params
                         for object in row:
                             for attribute_name in object.split(','):
-                                attribute_names.append(attribute_name) #wpisanie atteibute_name do tablicy z nazwami paramterow
+                                attribute_names.append(attribute_name) # wpisanie atteibute_name do tablicy z nazwami paramterow
                         id += 1
                     else:
                         for object in row:
@@ -52,19 +53,21 @@ class Graph(object):
                             for attribute_name in attribute_names: # przygotowanie argumentow do wpisania do obiektu
                                 kwargs[attribute_name] = str(object.split(',')[i])
                                 i += 1
-                            data_objects.append(DataObject(id, **kwargs))
+                            self.data_objects.append(DataObjectWrapper(id, **kwargs))
                             id += 1
+
 
         for attribute_name in attribute_names:
             self.params.add_attribute_name(str(attribute_name))
 
-        for data_object in data_objects:
+        for data_object in self.data_objects:
             for attribute_name, attribute_values in self.params.attribute_names.iteritems():
                 try:
-                    self.params.attribute_names[attribute_name].attribute_values[data_object.params[attribute_name]].add_to_item_list(data_object)
+                    # dodanie na koncu drzewa idikow obiektu w odpowiednim miejscu
+                    self.params.attribute_names[attribute_name].attribute_values[data_object.params[attribute_name]].add_to_item_list(data_object.id)
                 except:
                     self.params.attribute_names[attribute_name].add_value(data_object.params[attribute_name])
-                    self.params.attribute_names[attribute_name].attribute_values[data_object.params[attribute_name]].add_to_item_list(data_object)
+                    self.params.attribute_names[attribute_name].attribute_values[data_object.params[attribute_name]].add_to_item_list(data_object.id)
 
 
 class Param(object):
@@ -72,27 +75,35 @@ class Param(object):
         self.attribute_names = {}
 
     def add_attribute_name(self, attribute_name):
-        self.attribute_names[attribute_name] = AttributeValue()
+        self.attribute_names[attribute_name] = AttributeName(attribute_name)
 
     def __str__(self):
-        return self.attribute_names.__str__()
+        return "PARAM"
+
+
+class AttributeName(object):
+    def __init__(self, attribute_name):
+        self.attribute_values = {}
+        self.attribute_name = attribute_name
+
+    def add_value(self, value):
+        self.attribute_values[value] = AttributeValue(value)
+
+    def __str__(self):
+        return self.attribute_name
 
 
 class AttributeValue(object):
-    def __init__(self):
-        self.attribute_values = {}
-
-    def add_value(self, value):
-        self.attribute_values[value] = AttributeItemList()
-
-    def __str__(self):
-        return self.attribute_values.__str__()
-
-
-class AttributeItemList(object):
-    def __init__(self):
+    def __init__(self, value):
         self.attribute_itemList = []
+        self.attribute_value = value
 
     def add_to_item_list(self, item):
         self.attribute_itemList.append(item)
+
+    def __str__(self):
+        return self.attribute_value
+
+    def get_item_list(self):
+        return self.attribute_itemList
 

@@ -1,10 +1,16 @@
-from DataObject import DataObject
+from DataObject import DataObjectWrapper
 
 from DataObject import Graph
+from find_similarities import fill_similarities_weigth, init_weigth, find_objects, find_object_by_id
 
-filepath = "resources/Iris.csv"
+filepath = "resources/Wine.csv"
 
 graph = Graph(filepath)
+init_weigth(graph)
+fill_similarities_weigth(graph)
+object = find_object_by_id(graph, 3)
+# item_list = find_objects(graph,"Ash", "2.61")
+
 
 print('koniec')
 

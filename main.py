@@ -1,5 +1,5 @@
 import csv
-from DataObject import DataObject
+from DataObject import DataObjectWrapper
 from DataObject import IrisType
 
 
@@ -12,10 +12,10 @@ distance_to_classes = [[0 for x in range(3)] for x in range(k)]
 with open(filepath) as f:
         for row in [content for content in csv.reader(f, delimiter='\n')]:
             for object in row:
-                iris_obejcts.append(DataObject(iris_id,
-                                               float(object.split(',')[0]), float(object.split(',')[1]),
-                                               float(object.split(',')[2]), float(object.split(',')[3]),
-                                               str(object.split(',')[4])))
+                iris_obejcts.append(DataObjectWrapper(iris_id,
+                                                      float(object.split(',')[0]), float(object.split(',')[1]),
+                                                      float(object.split(',')[2]), float(object.split(',')[3]),
+                                                      str(object.split(',')[4])))
                 iris_id += 1
 
 points = 0
